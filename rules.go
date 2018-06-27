@@ -54,7 +54,7 @@ func Apply(object interface{}, rule Rule) bool {
 		return false
 	}
 
-	flatObjMap := jsonUtil.FlattenJSON(objMap)
+	flatObjMap := FlattenJSON(objMap)
 	return evaluate(flatObjMap, rule)
 }
 
@@ -201,11 +201,11 @@ func containsAll(firstValue interface{}, secondValue interface{}) bool {
 	case []string:
 		first, _ := firstValue.([]string)
 		second, _ := secondValue.([]string)
-		return helper.ContainsAllString(first, second)
+		return ContainsAllString(first, second)
 	case []int:
 		first, _ := firstValue.([]int)
 		second, _ := secondValue.([]int)
-		return helper.ContainsAllInt(first, second)
+		return ContainsAllInt(first, second)
 	default:
 		err := errors.New("containAll operator not allowed on " + typeOf(firstValue) + " & " + typeOf(secondValue))
 		panic(err)
@@ -217,11 +217,11 @@ func containsAny(firstValue interface{}, secondValue interface{}) bool {
 	case []string:
 		first, _ := firstValue.([]string)
 		second, _ := secondValue.([]string)
-		return helper.ContainsAnyString(first, second)
+		return ContainsAnyString(first, second)
 	case []int:
 		first, _ := firstValue.([]int)
 		second, _ := secondValue.([]int)
-		return helper.ContainsAnyInt(first, second)
+		return ContainsAnyInt(first, second)
 	default:
 		err := errors.New("containAny operator not allowed on " + typeOf(firstValue) + " & " + typeOf(secondValue))
 		panic(err)

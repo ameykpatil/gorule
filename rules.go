@@ -206,6 +206,29 @@ func containsAll(firstValue interface{}, secondValue interface{}) bool {
 		first, _ := firstValue.([]int)
 		second, _ := secondValue.([]int)
 		return ContainsAllInt(first, second)
+	case []interface{}:
+		// when firstValue is of the type []interface
+		// convert both the values into []interface
+		first, _ := firstValue.([]interface{})
+		second, _ := secondValue.([]interface{})
+		if len(first) > 0 && len(second) > 0 {
+			// check the type of an inner item of the slice
+			// convert slice of interface to corresponding slice of the type
+			switch first[0].(type) {
+			case string:
+				firstString := ConvertToStringSlice(first)
+				secondString := ConvertToStringSlice(second)
+				return ContainsAllString(firstString, secondString)
+			case int, int8, int16, int32, int64, float32, float64:
+				firstInt := ConvertToIntSlice(first)
+				secondInt := ConvertToIntSlice(second)
+				return ContainsAllInt(firstInt, secondInt)
+			default:
+				err := errors.New("containAny operator not allowed on types " + typeOf(first[0]) + " & " + typeOf(second[0]))
+				panic(err)
+			}
+		}
+		return false	
 	default:
 		err := errors.New("containAll operator not allowed on " + typeOf(firstValue) + " & " + typeOf(secondValue))
 		panic(err)
@@ -222,6 +245,25 @@ func containsAny(firstValue interface{}, secondValue interface{}) bool {
 		first, _ := firstValue.([]int)
 		second, _ := secondValue.([]int)
 		return ContainsAnyInt(first, second)
+	case []interface{}:
+		first, _ := firstValue.([]interface{})
+		second, _ := secondValue.([]interface{})
+		if len(first) > 0 && len(second) > 0 {
+			switch first[0].(type) {
+			case string:
+				firstString := ConvertToStringSlice(first)
+				secondString := ConvertToStringSlice(second)
+				return ContainsAnyString(firstString, secondString)
+			case int, int8, int16, int32, int64, float32, float64:
+				firstInt := ConvertToIntSlice(first)
+				secondInt := ConvertToIntSlice(second)
+				return ContainsAnyInt(firstInt, secondInt)
+			default:
+				err := errors.New("containAny operator not allowed on types " + typeOf(first[0]) + " & " + typeOf(second[0]))
+				panic(err)
+			}
+		}
+		return false	
 	default:
 		err := errors.New("containAny operator not allowed on " + typeOf(firstValue) + " & " + typeOf(secondValue))
 		panic(err)

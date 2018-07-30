@@ -59,3 +59,46 @@ func ContainsAnyInt(array []int, searchElems []int) bool {
 	}
 	return false
 }
+
+// ConvertToStringSlice converts interface array to string array
+func ConvertToStringSlice(slice []interface{}) []string {
+	stringSlice := make([]string, len(slice))
+	for i, item := range slice {
+		itemString, ok := item.(string)
+		if !ok {
+			err := errors.New("found elements of non string type")
+			panic(err)
+		}
+		stringSlice[i] = itemString
+	}
+	return stringSlice
+}
+
+// ConvertToIntSlice converts interface slice to int slice
+func ConvertToIntSlice(slice []interface{}) []int {
+	intSlice := make([]int, len(slice))
+	for i, item := range slice {
+		var itemInt int
+		switch item.(type) {
+		case int:
+			itemInt = item.(int)
+		case int8:
+			itemInt = int(item.(int8))
+		case int16:
+			itemInt = int(item.(int16))
+		case int32:
+			itemInt = int(item.(int32))
+		case int64:
+			itemInt = int(item.(int64))
+		case float32:
+			itemInt = int(item.(float32))
+		case float64:
+			itemInt = int(item.(float64))
+		default:
+			err := errors.New("found elements of non int type")
+			panic(err)
+		}
+		intSlice[i] = itemInt
+	}
+	return intSlice
+}
